@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socials | lilianax.lol</title>
+  <link rel="icon" type="image/png" href="https://www.banner.yt/UC6SnTw5Tr3b6IoJhwNsQdvg/avatar" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --pink: #ff5fb0;
+      --pink-soft: #ff9ecb;
+      --pink-deep: #c239b3;
+      --bg-0: #120311;
+      --bg-1: #2b0a20;
+      --bg-2: #4a0e33;
+      --text: #ffe9f5;
+      --text-dim: #d9a8c4;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', 'Helvetica', sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 20%, rgba(255, 95, 176, 0.18), transparent 45%),
+                  radial-gradient(circle at 80% 75%, rgba(194, 57, 179, 0.22), transparent 50%),
+                  linear-gradient(135deg, var(--bg-0), var(--bg-1), var(--bg-2), var(--bg-0));
+      background-size: 200% 200%, 200% 200%, 400% 400%;
+      animation: gradientShift 22s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 0%, 100% 100%, 0% 50%; }
+      50% { background-position: 100% 100%, 0% 0%, 100% 50%; }
+      100% { background-position: 0% 0%, 100% 100%, 0% 50%; }
+    }
+
+    .back-link {
+      position: fixed;
+      top: 24px;
+      left: 28px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back-link:hover { color: var(--pink-soft); }
+
+    .card {
+      width: min(480px, 90vw);
+      padding: 56px 40px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 143, 214, 0.18);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: clamp(24px, 4vw, 30px);
+      font-weight: 600;
+      margin: 0 0 8px;
+    }
+
+    p { color: var(--text-dim); font-size: 14px; margin: 0; }
+    i.fa-heart-crack { color: var(--pink); font-size: 32px; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+  <a class="back-link" href="/"><i class="fa-solid fa-arrow-left"></i> Home</a>
+  <div class="card">
+    <i class="fa-solid fa-heart-crack"></i>
+    <h1>Socials — coming soon</h1>
+    <p>Discord, YouTube, and other links will show up here shortly.</p>
+  </div>
+</body>
+</html>

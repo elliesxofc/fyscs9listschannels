@@ -1,0 +1,42 @@
+{
+  "name": "estserverv2",
+  "version": "1.0.0",
+  "description": "The API code behind t1ch.com",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js &"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hexzdmusic/lc.me-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hexzdmusic/lc.me-api/issues"
+  },
+  "homepage": "https://github.com/hexzdmusic/lc.me-api#readme",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "body-parser": "^1.20.0",
+    "cheerio": "^1.0.0-rc.12",
+    "convnetjs": "^0.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "fastify": "^4.24.3",
+    "fastify-express": "^0.4.0",
+    "gamedig": "^4.0.6",
+    "humanoid-js": "^1.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "limdu": "^1.0.0",
+    "minecraft-server-util": "^5.4.0",
+    "random-forest-classifier": "^0.6.0",
+    "request": "^2.88.2",
+    "softmax": "^3.0.1",
+    "synaptic": "^1.1.4",
+    "tiktok-scraper": "^1.4.36",
+    "tiktok-signature": "^1.7.3",
+    "yt-channel-info": "^3.2.1"
+  }
+}
