@@ -379,7 +379,7 @@
         displayChannels(allChannels);
       } catch (err) {
         console.error('Error fetching channels:', err);
-        emptyState.textContent = 'Failed to load channels. Is the API running?';
+        emptyState.textContent = 'Failed to load channels.';
         emptyState.style.display = 'block';
       } finally {
         loading.style.display = 'none';
