@@ -58,7 +58,7 @@
 
     .card {
       width: min(480px, 90vw);
-      padding: 56px 40px;
+      padding: 48px 40px 36px;
       border-radius: 28px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 143, 214, 0.18);
@@ -70,19 +70,112 @@
     h1 {
       font-size: clamp(24px, 4vw, 30px);
       font-weight: 600;
-      margin: 0 0 8px;
+      margin: 0 0 6px;
     }
 
-    p { color: var(--text-dim); font-size: 14px; margin: 0; }
-    i.fa-heart-crack { color: var(--pink); font-size: 32px; margin-bottom: 16px; }
+    .subtitle {
+      color: var(--text-dim);
+      font-size: 13px;
+      margin: 0 0 28px;
+    }
+
+    i.fa-heart { color: var(--pink); font-size: 32px; margin-bottom: 16px; }
+
+    .link-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .link-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 143, 214, 0.12);
+      text-decoration: none;
+      text-align: left;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .link-row:hover {
+      transform: translateY(-2px);
+      border-color: var(--pink-soft);
+      background: rgba(255, 95, 176, 0.08);
+    }
+
+    .link-icon {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .link-icon.website { background: linear-gradient(135deg, var(--pink-deep), var(--pink-soft)); }
+    .link-icon.discord { background: #5865F2; }
+    .link-icon.spotify { background: #1DB954; }
+    .link-icon.youtube { background: #FF0000; }
+
+    .link-text .label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .link-text .url {
+      font-size: 12px;
+      color: var(--pink-soft);
+      word-break: break-all;
+    }
   </style>
 </head>
 <body>
   <a class="back-link" href="/"><i class="fa-solid fa-arrow-left"></i> Home</a>
   <div class="card">
-    <i class="fa-solid fa-heart-crack"></i>
-    <h1>Socials — coming soon</h1>
-    <p>Discord, YouTube, and other links will show up here shortly.</p>
+    <i class="fa-solid fa-heart"></i>
+    <h1>Socials</h1>
+    <p class="subtitle">These are my social links :)</p>
+
+    <div class="link-list">
+      <a class="link-row" href="https://lilianax.lol" target="_blank" rel="noopener">
+        <span class="link-icon website"><i class="fa-solid fa-globe"></i></span>
+        <span class="link-text">
+          <div class="label">Website</div>
+          <div class="url">lilianax.lol</div>
+        </span>
+      </a>
+
+      <a class="link-row" href="https://discord.gg/PnfrXwdwkU" target="_blank" rel="noopener">
+        <span class="link-icon discord"><i class="fa-brands fa-discord"></i></span>
+        <span class="link-text">
+          <div class="label">Discord Server!</div>
+          <div class="url">discord.gg/PnfrXwdwkU</div>
+        </span>
+      </a>
+
+      <a class="link-row" href="https://open.spotify.com/artist/3teqoI0UAVVcg7nnvpEY5A" target="_blank" rel="noopener">
+        <span class="link-icon spotify"><i class="fa-brands fa-spotify"></i></span>
+        <span class="link-text">
+          <div class="label">Spotify</div>
+          <div class="url">open.spotify.com/artist/3teqoI0UAVVcg7nnvpEY5A</div>
+        </span>
+      </a>
+
+      <a class="link-row" href="https://www.youtube.com/@elliesxofc" target="_blank" rel="noopener">
+        <span class="link-icon youtube"><i class="fa-brands fa-youtube"></i></span>
+        <span class="link-text">
+          <div class="label">YouTube</div>
+          <div class="url">youtube.com/@elliesxofc</div>
+        </span>
+      </a>
+    </div>
   </div>
 </body>
 </html>

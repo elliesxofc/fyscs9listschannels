@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Live status of lilianax.lol's FYSC data backend and refresh system.">
   <title>Status | lilianax.lol</title>
   <link rel="icon" type="image/png" href="https://www.banner.yt/UC6SnTw5Tr3b6IoJhwNsQdvg/avatar" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,8 +16,13 @@
       --bg-0: #120311;
       --bg-1: #2b0a20;
       --bg-2: #4a0e33;
+      --card-bg: rgba(255, 255, 255, 0.04);
+      --card-border: rgba(255, 143, 214, 0.18);
       --text: #ffe9f5;
       --text-dim: #d9a8c4;
+      --up: #4ee08a;
+      --down: #ff6b6b;
+      --checking: #ffb24e;
     }
 
     * { box-sizing: border-box; }
@@ -34,6 +40,7 @@
                   linear-gradient(135deg, var(--bg-0), var(--bg-1), var(--bg-2), var(--bg-0));
       background-size: 200% 200%, 200% 200%, 400% 400%;
       animation: gradientShift 22s ease infinite;
+      padding: 90px 20px 60px;
     }
 
     @keyframes gradientShift {
@@ -56,33 +63,358 @@
 
     .back-link:hover { color: var(--pink-soft); }
 
+    .refresh-now {
+      position: fixed;
+      top: 24px;
+      right: 28px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      border-radius: 999px;
+      padding: 8px 14px;
+      color: var(--text-dim);
+      font-family: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .refresh-now:hover:not(:disabled) {
+      color: #fff;
+      border-color: var(--pink-soft);
+    }
+
+    .refresh-now:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .refresh-now i.spin {
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
     .card {
-      width: min(480px, 90vw);
-      padding: 56px 40px;
+      width: min(560px, 92vw);
+      padding: 44px 36px 36px;
       border-radius: 28px;
       background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 143, 214, 0.18);
+      border: 1px solid var(--card-border);
       backdrop-filter: blur(16px);
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-      text-align: center;
     }
 
     h1 {
       font-size: clamp(24px, 4vw, 30px);
       font-weight: 600;
-      margin: 0 0 8px;
+      margin: 0 0 6px;
+      text-align: center;
     }
 
-    p { color: var(--text-dim); font-size: 14px; margin: 0; }
-    i.fa-gear { color: var(--pink); font-size: 32px; margin-bottom: 16px; }
+    .overall {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-dim);
+      margin: 0 0 30px;
+    }
+
+    .overall .dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    .service-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 4px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .service-row:last-child {
+      border-bottom: none;
+    }
+
+    .service-info .name {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .service-info .meta {
+      margin-top: 3px;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .badge .pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .badge.up {
+      background: rgba(78, 224, 138, 0.14);
+      color: var(--up);
+    }
+
+    .badge.up .pulse {
+      box-shadow: 0 0 0 0 rgba(78, 224, 138, 0.6);
+      animation: pulse 1.8s ease-out infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(78, 224, 138, 0.55); }
+      70% { box-shadow: 0 0 0 7px rgba(78, 224, 138, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(78, 224, 138, 0); }
+    }
+
+    .badge.down {
+      background: rgba(255, 107, 107, 0.14);
+      color: var(--down);
+    }
+
+    .badge.live {
+      background: rgba(255, 95, 176, 0.16);
+      color: var(--pink);
+    }
+
+    .badge.live .pulse {
+      box-shadow: 0 0 0 0 rgba(255, 95, 176, 0.6);
+      animation: pulse-live 1.2s ease-out infinite;
+    }
+
+    @keyframes pulse-live {
+      0% { box-shadow: 0 0 0 0 rgba(255, 95, 176, 0.55); }
+      70% { box-shadow: 0 0 0 7px rgba(255, 95, 176, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 95, 176, 0); }
+    }
+
+    .badge.offline {
+      background: rgba(217, 168, 196, 0.1);
+      color: var(--text-dim);
+    }
+
+    .badge.checking {
+      background: rgba(255, 178, 78, 0.14);
+      color: var(--checking);
+    }
+
+    .badge.checking .pulse {
+      animation: blink 1s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0.25; }
+    }
+
+    .footer-note {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
   </style>
 </head>
 <body>
   <a class="back-link" href="/"><i class="fa-solid fa-arrow-left"></i> Home</a>
+  <button class="refresh-now" id="refreshNowBtn"><i class="fa-solid fa-rotate" id="refreshIcon"></i> Check now</button>
+
   <div class="card">
-    <i class="fa-solid fa-gear"></i>
-    <h1>Status — coming soon</h1>
-    <p>Uptime for the site and its data sources will show up here shortly.</p>
+    <h1>System Status</h1>
+    <p class="overall" id="overallLine"><span class="dot" id="overallDot"></span><span id="overallText">Checking...</span></p>
+
+    <div id="serviceList"></div>
+
+    <p class="footer-note" id="footerNote">Auto-checks every 30s.</p>
   </div>
+
+  <script src="/config.js"></script>
+  <script>
+    // Each check hits something this site actually depends on -- no
+    // fabricated "services" that don't correspond to real infrastructure.
+    // Every check is read-only: /refresh and the no-clientId form of
+    // /checkForRefresh both mutate shared state (they trigger or consume a
+    // refresh flag every open display page is watching), so this page
+    // deliberately never calls those -- only the clientId'd form of
+    // /checkForRefresh, which just reports status without acking/clearing
+    // anything for anyone else.
+    const CHECK_INTERVAL_MS = 30000;
+    const TIMEOUT_MS = 8000;
+    const MONITOR_CLIENT_ID = 'status-monitor-' + Math.random().toString(36).slice(2);
+    // The old Season 1 backend -- a separate, externally-hosted server with
+    // no source in this backup. Its route is still literally /public/s9_data
+    // (never renamed when Season 1 was forked off), not a season-specific
+    // path, so this intentionally reuses the same route name as the Season
+    // 9 base below -- just against a different host.
+    const SEASON1_API_BASE = 'https://fyscs1-private-canada5493.tnstats.dev';
+
+    const SERVICES = [
+      {
+        name: 'FYSC Data API',
+        meta: 'Channel list & subscriber counts (Season 9)',
+        check: async () => {
+          const res = await fetchWithTimeout(window.FYSC_DATA_URL);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+          if (!Array.isArray(data)) throw new Error('Unexpected response shape');
+          return data.length + ' channels';
+        }
+      },
+      {
+        name: 'FYSC Data API (Season 1)',
+        meta: 'Channel list & subscriber counts',
+        check: async () => {
+          const res = await fetchWithTimeout(SEASON1_API_BASE + '/public/s9_data');
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+          if (!Array.isArray(data)) throw new Error('Unexpected response shape');
+          return data.length + ' channels';
+        }
+      },
+      {
+        name: 'Live Refresh System',
+        meta: 'Chart refresh notifications',
+        check: async () => {
+          const url = window.FYSC_API_BASE + '/checkForRefresh?clientId=' + MONITOR_CLIENT_ID;
+          const res = await fetchWithTimeout(url);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+          if (typeof data.isRefreshing !== 'boolean') throw new Error('Unexpected response shape');
+          return 'responding';
+        }
+      }
+    ];
+
+    async function fetchWithTimeout(url) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+      try {
+        return await fetch(url, { signal: controller.signal });
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    const serviceList = document.getElementById('serviceList');
+    const overallDot = document.getElementById('overallDot');
+    const overallText = document.getElementById('overallText');
+    const refreshNowBtn = document.getElementById('refreshNowBtn');
+    const refreshIcon = document.getElementById('refreshIcon');
+    const footerNote = document.getElementById('footerNote');
+
+    const rows = SERVICES.map(service => {
+      const row = document.createElement('div');
+      row.className = 'service-row';
+
+      const info = document.createElement('div');
+      info.className = 'service-info';
+      const name = document.createElement('div');
+      name.className = 'name';
+      name.textContent = service.name;
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.textContent = service.meta;
+      info.appendChild(name);
+      info.appendChild(meta);
+
+      const badge = document.createElement('span');
+      badge.className = 'badge checking';
+      badge.innerHTML = '<span class="pulse"></span><span class="label">Checking</span>';
+
+      row.appendChild(info);
+      row.appendChild(badge);
+      serviceList.appendChild(row);
+
+      return { service, metaEl: meta, badge, label: badge.querySelector('.label') };
+    });
+
+    const STATE_LABELS = { checking: 'Checking', up: 'Up', down: 'Down', live: 'Live', offline: 'Offline' };
+
+    function setBadge(entry, state, detail) {
+      entry.badge.className = 'badge ' + state;
+      entry.label.textContent = STATE_LABELS[state] || state;
+      if (detail) entry.metaEl.textContent = entry.service.meta + ' — ' + detail;
+    }
+
+    // 'live' and 'offline' (the stream check's two normal outcomes) both
+    // count as healthy for the overall rollup -- only 'down' (actually
+    // unreachable/erroring) should ever read as an outage.
+    function updateOverall() {
+      const states = rows.map(r => r.badge.className);
+      const isHealthy = c => c.includes('up') || c.includes('live') || c.includes('offline');
+      if (states.some(c => c.includes('checking'))) {
+        overallDot.style.background = 'var(--checking)';
+        overallText.textContent = 'Checking...';
+      } else if (states.every(isHealthy)) {
+        overallDot.style.background = 'var(--up)';
+        overallText.textContent = 'All systems operational';
+      } else if (states.every(c => c.includes('down'))) {
+        overallDot.style.background = 'var(--down)';
+        overallText.textContent = 'All systems down';
+      } else {
+        overallDot.style.background = 'var(--checking)';
+        overallText.textContent = 'Partial outage';
+      }
+    }
+
+    async function runChecks() {
+      refreshNowBtn.disabled = true;
+      refreshIcon.classList.add('spin');
+
+      await Promise.all(rows.map(async (entry) => {
+        setBadge(entry, 'checking');
+        updateOverall();
+        const started = performance.now();
+        try {
+          const result = await entry.service.check();
+          const ms = Math.round(performance.now() - started);
+          // A check either returns a plain string (=> healthy/'up') or an
+          // { state, detail } object when it needs a more specific state,
+          // like the stream check's live/offline.
+          if (result && typeof result === 'object' && result.state) {
+            setBadge(entry, result.state, result.detail + ' · ' + ms + 'ms');
+          } else {
+            setBadge(entry, 'up', result + ' · ' + ms + 'ms');
+          }
+        } catch (err) {
+          console.error(entry.service.name + ' check failed:', err);
+          setBadge(entry, 'down', err.name === 'AbortError' ? 'timed out' : 'unreachable');
+        }
+        updateOverall();
+      }));
+
+      const now = new Date();
+      footerNote.textContent = 'Last checked ' + now.toLocaleTimeString() + ' · auto-checks every 30s';
+      refreshNowBtn.disabled = false;
+      refreshIcon.classList.remove('spin');
+    }
+
+    refreshNowBtn.addEventListener('click', runChecks);
+
+    runChecks();
+    setInterval(runChecks, CHECK_INTERVAL_MS);
+  </script>
 </body>
 </html>

@@ -160,40 +160,10 @@
       background: linear-gradient(90deg, #d6006f, var(--pink-soft));
     }
 
-    .card {
-      transition: opacity 0.2s ease, transform 0.2s ease;
+    .button-grinding {
+      background: linear-gradient(90deg, #ff7a18, var(--pink));
     }
 
-    .card.switching {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-
-    .view {
-      display: none;
-    }
-
-    .view.active {
-      display: block;
-    }
-
-    .back-button {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 24px;
-      background: none;
-      border: none;
-      color: var(--text-dim);
-      font-family: inherit;
-      font-size: 14px;
-      cursor: pointer;
-      transition: color 0.2s ease;
-    }
-
-    .back-button:hover {
-      color: var(--pink-soft);
-    }
   </style>
 </head>
 <body>
@@ -205,66 +175,15 @@
     </div>
   </div>
 
-  <div class="card" id="card">
-    <div class="view active" id="view-home">
-      <h1>Welcome to <span>lilianax.lol</span>, the official website</h1>
-      <p class="subtitle">FYSC channel stats, socials &amp; live status</p>
-      <div class="button-list">
-        <a href="#" class="fancy-button button-channels" id="channelsButton"><i class="fa-solid fa-list"></i> FYSC Channels</a>
-        <a href="/socials" class="fancy-button button-socials"><i class="fa-solid fa-heart"></i> Socials</a>
-        <a href="/status" class="fancy-button button-status"><i class="fa-solid fa-circle-check"></i> Status</a>
-      </div>
-    </div>
-
-    <div class="view" id="view-select">
-      <h1>Which season are you selecting?</h1>
-      <div class="button-list">
-        <a href="/season9/fyscchannels" class="fancy-button"><i class="fa-solid fa-list"></i> Season 9</a>
-      </div>
-      <button class="back-button" id="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
+  <div class="card">
+    <h1>Welcome to <span>lilianax.lol</span>, the official website</h1>
+    <p class="subtitle">FYSC channel stats, socials &amp; live status</p>
+    <div class="button-list">
+      <a href="https://fysc.lilianax.lol" class="fancy-button button-channels"><i class="fa-solid fa-list"></i> FYSC Channels</a>
+      <a href="https://fysc.lilianax.lol/grinding" class="fancy-button button-grinding"><i class="fa-solid fa-fire"></i> Grinding</a>
+      <a href="/socials" class="fancy-button button-socials"><i class="fa-solid fa-heart"></i> Socials</a>
+      <a href="/status" class="fancy-button button-status"><i class="fa-solid fa-circle-check"></i> Status</a>
     </div>
   </div>
-
-  <script>
-    const card = document.getElementById('card');
-    const viewHome = document.getElementById('view-home');
-    const viewSelect = document.getElementById('view-select');
-
-    function setView(showEl, hideEl) {
-      hideEl.classList.remove('active');
-      showEl.classList.add('active');
-    }
-
-    function switchView(showEl, hideEl, path) {
-      history.pushState({}, '', path);
-      card.classList.add('switching');
-      setTimeout(() => {
-        setView(showEl, hideEl);
-        card.classList.remove('switching');
-      }, 200);
-    }
-
-    document.getElementById('channelsButton').addEventListener('click', (e) => {
-      e.preventDefault();
-      switchView(viewSelect, viewHome, '/select');
-    });
-
-    document.getElementById('backButton').addEventListener('click', (e) => {
-      e.preventDefault();
-      switchView(viewHome, viewSelect, '/');
-    });
-
-    window.addEventListener('popstate', () => {
-      if (location.pathname === '/select') {
-        setView(viewSelect, viewHome);
-      } else {
-        setView(viewHome, viewSelect);
-      }
-    });
-
-    if (location.pathname === '/select') {
-      setView(viewSelect, viewHome);
-    }
-  </script>
 </body>
 </html>
