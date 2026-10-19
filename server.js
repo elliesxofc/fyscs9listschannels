@@ -29,6 +29,10 @@ app.get('/status', (req, res) => {
   res.sendFile(path.join(VIEWS_DIR, 'status.html'));
 });
 
+app.get('/grinding', (req, res) => {
+  res.sendFile(path.join(VIEWS_DIR, 'grinding.html'));
+});
+
 app.listen(PORT, () => {
   console.log(`fyscs9listchannels server running at http://localhost:${PORT}`);
 });
