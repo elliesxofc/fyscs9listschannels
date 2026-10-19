@@ -264,10 +264,7 @@
     const TIMEOUT_MS = 8000;
     const MONITOR_CLIENT_ID = 'status-monitor-' + Math.random().toString(36).slice(2);
     // The old Season 1 backend -- a separate, externally-hosted server with
-    // no source in this backup. Its route is still literally /public/s9_data
-    // (never renamed when Season 1 was forked off), not a season-specific
-    // path, so this intentionally reuses the same route name as the Season
-    // 9 base below -- just against a different host.
+    // no source in this backup. Its public channel list is /public/s1_data.
     const SEASON1_API_BASE = 'https://api-prox.tnstats.dev';
 
     const SERVICES = [
@@ -286,7 +283,7 @@
         name: 'FYSC Data API (Season 1)',
         meta: 'Channel list & subscriber counts',
         check: async () => {
-          const res = await fetchWithTimeout(SEASON1_API_BASE + '/public/s9_data');
+          const res = await fetchWithTimeout(SEASON1_API_BASE + '/public/s1_data');
           if (!res.ok) throw new Error('HTTP ' + res.status);
           const data = await res.json();
           if (!Array.isArray(data)) throw new Error('Unexpected response shape');
