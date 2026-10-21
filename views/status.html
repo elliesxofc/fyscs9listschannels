@@ -264,9 +264,11 @@
     const TIMEOUT_MS = 8000;
     const MONITOR_CLIENT_ID = 'status-monitor-' + Math.random().toString(36).slice(2);
     // The old Season 1 backend -- a separate, externally-hosted server with
-    // no source in this backup. It's checked through its /healthz endpoint;
-    // what that returns isn't known here, so any 2xx counts as up.
-    const SEASON1_API_BASE = 'https://api-prox.tnstats.dev';
+    // no source in this backup. Its route is still literally /public/s9_data
+    // (never renamed when Season 1 was forked off), not a season-specific
+    // path, so this intentionally reuses the same route name as the Season
+    // 9 base below -- just against a different host.
+    const SEASON1_API_BASE = 'https://fyscs1-private-canada5493.tnstats.dev';
 
     const SERVICES = [
       {
@@ -282,11 +284,13 @@
       },
       {
         name: 'FYSC Data API (Season 1)',
-        meta: 'Health check',
+        meta: 'Channel list & subscriber counts',
         check: async () => {
-          const res = await fetchWithTimeout(SEASON1_API_BASE + '/healthz');
+          const res = await fetchWithTimeout(SEASON1_API_BASE + '/public/s9_data');
           if (!res.ok) throw new Error('HTTP ' + res.status);
-          return 'healthy';
+          const data = await res.json();
+          if (!Array.isArray(data)) throw new Error('Unexpected response shape');
+          return data.length + ' channels';
         }
       },
       {
