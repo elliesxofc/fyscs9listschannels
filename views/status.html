@@ -283,6 +283,15 @@
         name: 'FYSC Data API (Season 1)',
         meta: 'Channel list & subscriber counts',
         check: async () => {
+          // Through the season1-status Worker once it's deployed (see
+          // workers/season1-status), so the browser never sees Season 1's
+          // domain; straight to the Season 1 server until then.
+          if (window.FYSC_S1_STATUS_URL) {
+            const res = await fetchWithTimeout(window.FYSC_S1_STATUS_URL);
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error || 'HTTP ' + res.status);
+            return data.channels + ' channels';
+          }
           const res = await fetchWithTimeout(SEASON1_API_BASE + '/public/s1_data');
           if (!res.ok) throw new Error('HTTP ' + res.status);
           const data = await res.json();
