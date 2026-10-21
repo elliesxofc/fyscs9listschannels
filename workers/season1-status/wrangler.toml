@@ -1,0 +1,6 @@
+name = "season1-status"
+main = "worker.js"
+compatibility_date = "2026-10-01"
+
+# SEASON1_API_BASE is a secret, not a var -- set it with:
+#   npx wrangler secret put SEASON1_API_BASE
