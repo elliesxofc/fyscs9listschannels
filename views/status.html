@@ -254,15 +254,10 @@
   <script>
     // Each check hits something this site actually depends on -- no
     // fabricated "services" that don't correspond to real infrastructure.
-    // Every check is read-only: /refresh and the no-clientId form of
-    // /checkForRefresh both mutate shared state (they trigger or consume a
-    // refresh flag every open display page is watching), so this page
-    // deliberately never calls those -- only the clientId'd form of
-    // /checkForRefresh, which just reports status without acking/clearing
-    // anything for anyone else.
+    // Every check is read-only, and goes through the grind proxy (config.js)
+    // rather than to the fysca server directly.
     const CHECK_INTERVAL_MS = 30000;
     const TIMEOUT_MS = 8000;
-    const MONITOR_CLIENT_ID = 'status-monitor-' + Math.random().toString(36).slice(2);
     // The old Season 1 backend -- a separate, externally-hosted server with
     // no source in this backup. Its public channel list is /public/s1_data.
     const SEASON1_API_BASE = 'https://api-prox.tnstats.dev';
@@ -270,7 +265,7 @@
     const SERVICES = [
       {
         name: 'FYSC Data API',
-        meta: 'Channel list & subscriber counts (Season 9)',
+        meta: 'Channel list & subscriber counts (Season 10)',
         check: async () => {
           const res = await fetchWithTimeout(window.FYSC_DATA_URL);
           if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -300,14 +295,19 @@
         }
       },
       {
-        name: 'Live Refresh System',
-        meta: 'Chart refresh notifications',
+        // Was "Live Refresh System" (/checkForRefresh). That route lives only
+        // on the fysca server itself, and the site now talks to it through
+        // the grind proxy, which doesn't forward it -- so this checks the
+        // proxy's login service instead, the other thing this site needs.
+        // 503 before opening day is the proxy working as intended.
+        name: 'Grinding API',
+        meta: 'Logins & grinding on fysc.lilianax.lol',
         check: async () => {
-          const url = window.FYSC_API_BASE + '/checkForRefresh?clientId=' + MONITOR_CLIENT_ID;
-          const res = await fetchWithTimeout(url);
+          const res = await fetchWithTimeout(window.FYSC_API_BASE + '/auth/captcha');
+          if (res.status === 503) return 'opens with the season';
           if (!res.ok) throw new Error('HTTP ' + res.status);
           const data = await res.json();
-          if (typeof data.isRefreshing !== 'boolean') throw new Error('Unexpected response shape');
+          if (!data || !data.token) throw new Error('Unexpected response shape');
           return 'responding';
         }
       }
